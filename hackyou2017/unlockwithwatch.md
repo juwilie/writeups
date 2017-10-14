@@ -1,3 +1,5 @@
+Нужно: кастомный ответ на ping с измененным timestamp.
+
 ```c
 #include <stdlib.h>
 #include <unistd.h>
