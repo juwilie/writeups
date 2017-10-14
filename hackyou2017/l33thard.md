@@ -6,6 +6,35 @@ Video: https://cloud.mail.ru/public/L46M/cNFjfnSyh
 
 Checker: https://hy17-leethard.spb.ctf.su/
 
+Смотрим даташит к плате(интересуют леды)^ https://reference.digilentinc.com/reference/programmable-logic/nexys-2/reference-manual
+
+cons1 - переобозначение стандартных названий кнопок и компонентов дисплея.
+
+Видим в коде такую штуку:
+```vhdl
+	 signal accumulator: unsigned(31 downto 0) := "00000000000000000000000000000000";
+	 signal state : integer range 0 to 32 :=0;
+	 signal view1 : std_logic_vector(7 downto 0) := "11111111";
+	 signal view2 : std_logic_vector(7 downto 0) := "11111111";
+	 signal view3 : std_logic_vector(7 downto 0) := "11111111";
+	 signal view4 : std_logic_vector(7 downto 0) := "11111111";
+```
+
+Она делает экраны полностю горящими(горят все сегменты). 
+После:
+
+```vhdl
+view1 <= std_logic_vector(accumulator(31 downto 24));
+view2 <= std_logic_vector(accumulator(23 downto 16));
+view3 <= std_logic_vector(accumulator(15 downto 8));
+view4 <= std_logic_vector(accumulator(7 downto 0));
+```
+Теперь экраны зависят от значения accumulator.
+
+После происходят действия, зввисящие от нажатия той или иной кнопки. Переписываем на любой удобный язык и считаем, какое значение у le37, меняем первые два байта, чтобы было 1337 и брутфорсим последовательность.
+
+P.S. в даташите указано, что данные хранятся в реверсированном виде ( data = ~data), это нужно иметь в виду при составлении числа для 1337
+
 exploit:
 
 ```c++
